@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useSpring, useMotionValue, Variants } from "fr
 /**
  * Section1: Professional Hero Component for SMRSC 2026.
  * Features a high-end cinematic reveal for the "Coming Soon" text after 6 seconds.
- * Updated: Button refined to remove glow/shadow effects for a cleaner look.
+ * Updated: Timer number typography adjusted to exact user specifications.
  */
 
 interface TimeLeft {
@@ -111,23 +111,20 @@ export default function App() {
         variants={uiContainerVariants}
         className="relative z-10 w-full h-full flex flex-col items-center"
       >
-        {/* Center Video Reveal */}
+        {/* Center Video Reveal Placeholder */}
         <div className="absolute top-[32%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[850px] flex justify-center items-center z-10">
           <motion.div 
             variants={fadeInUpVariants}
             style={{ x: smoothX, y: smoothY }}
             className="w-full flex justify-center"
           >
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-auto object-contain opacity-70 pointer-events-none mix-blend-screen"
-            >
-              <source src="/videos/Color.mp4" type="video/mp4" />
-              <div className="w-full aspect-video bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl" />
-            </video>
+            <div className="relative w-full aspect-video flex items-center justify-center">
+              <div className="absolute w-full h-full bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl opacity-30" />
+              {/* Optional: Add video tag back when source is available */}
+              <div className="w-64 h-64 border border-white/5 rounded-full animate-pulse flex items-center justify-center">
+                 <div className="w-48 h-48 border border-white/10 rounded-full" />
+              </div>
+            </div>
           </motion.div>
         </div>
 
@@ -179,7 +176,6 @@ export default function App() {
                 fontWeight: 400,
                 lineHeight: "160%",
                 letterSpacing: "0.1em",
-               
               }}
             >
               Third global SS Innovations multi specialty robotic surgery conference
@@ -207,7 +203,7 @@ export default function App() {
             </div>
 
             <div className="flex items-center justify-center w-full opacity-40 hover:opacity-100 transition-opacity">
-              <p className="text-[10px] tracking-[0.4em]  text-white font-sans font-medium">
+              <p className="text-[10px] tracking-[0.4em] text-white font-sans font-medium uppercase">
                 An event by SSInnovations
               </p>
             </div>
@@ -234,6 +230,7 @@ function TimeUnit({ value, label, progress }: TimeUnitProps) {
   return (
     <motion.div className="flex flex-col items-center">
       <div className="relative flex items-center justify-center w-20 h-20 md:w-28 md:h-28 mb-4">
+        {/* Progress Ring */}
         <div className="absolute inset-0 flex items-center justify-center">
           <svg className="w-full h-full -rotate-90 overflow-visible">
             <circle 
@@ -263,6 +260,7 @@ function TimeUnit({ value, label, progress }: TimeUnitProps) {
           </svg>
         </div>
 
+        {/* Value with Transition */}
         <div className="relative h-12 overflow-hidden flex items-center justify-center">
           <AnimatePresence mode="popLayout">
             <motion.span
@@ -274,10 +272,14 @@ function TimeUnit({ value, label, progress }: TimeUnitProps) {
               style={{
                 color: "#FFF",
                 textAlign: "center",
-                fontFamily: 'system-ui, sans-serif',
-                fontSize: "clamp(24px, 5vw, 36px)",
-                fontWeight: 300,
-                lineHeight: "1",
+                textShadow: "0 4px 4px rgba(0, 0, 0, 0.40)",
+                fontFamily: '"Blauer Nue", "Inter", system-ui, sans-serif',
+                fontSize: "32px",
+                fontStyle: "normal",
+                fontWeight: 500,
+                lineHeight: "150%", // 48px
+                letterSpacing: "-0.352px",
+                textTransform: "capitalize",
               }}
               className="tabular-nums"
             >
