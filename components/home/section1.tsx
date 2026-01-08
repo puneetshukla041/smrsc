@@ -3,8 +3,9 @@ import { motion, AnimatePresence, useSpring, useMotionValue, Variants } from "fr
 
 /**
  * Section1: Professional Hero Component for SMRSC 2026.
- * Features a high-end cinematic reveal for the "Coming Soon" text after 6 seconds.
- * Updated: Video element restored and configured for reliable autoplay.
+ * Features a high-end cinematic reveal for the "Coming Soon" text after a short delay.
+ * Updated: Video configuration updated to match user snippet (opacity-70, mix-blend-screen, /videos/Color.mp4).
+ * Maintained: Refined Register Button styling and enlarged timer circles.
  */
 
 interface TimeLeft {
@@ -51,11 +52,10 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Ensure video plays if browser blocks autoplay initially
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch(error => {
-        console.log("Autoplay was prevented. User interaction might be required.", error);
+        console.log("Autoplay check:", error);
       });
     }
   }, []);
@@ -95,7 +95,7 @@ export default function App() {
       y: 0,
       filter: "blur(0px)",
       transition: {
-        delay: 6,
+        delay: 2, 
         duration: 2.5,
         ease: [0.22, 1, 0.36, 1],
       },
@@ -109,7 +109,7 @@ export default function App() {
       onMouseMove={handleMouseMove}
       className="relative w-full h-screen overflow-hidden flex flex-col items-center bg-black selection:bg-white/20 px-6"
     >
-      {/* Background Depth Layers */}
+      {/* Background Ambience */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
         <div className="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-white/5 blur-[150px]" />
@@ -119,14 +119,13 @@ export default function App() {
         variants={uiContainerVariants}
         className="relative z-10 w-full h-full flex flex-col items-center"
       >
-        {/* Center Video Reveal */}
-        <div className="absolute top-[32%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[850px] flex justify-center items-center z-10">
+        {/* Video Hero Area - Updated to match snippet behavior */}
+        <div className="absolute top-[35%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[850px] flex justify-center items-center z-10">
           <motion.div 
             variants={fadeInUpVariants}
             style={{ x: smoothX, y: smoothY }}
             className="w-full flex justify-center relative"
           >
-            {/* High-end Video Asset */}
             <video
               ref={videoRef}
               autoPlay
@@ -134,35 +133,34 @@ export default function App() {
               loop
               playsInline
               className="w-full h-auto object-contain opacity-70 pointer-events-none mix-blend-screen z-10"
-              style={{ filter: "contrast(1.1) brightness(1.1)" }}
+              style={{ filter: "contrast(1.2) brightness(1.2)" }}
             >
               <source src="/videos/Color.mp4" type="video/mp4" />
-              {/* Fallback source if local path fails in preview */}
-              <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-flowing-gold-and-white-lines-34444-large.mp4" type="video/mp4" />
+              {/* Fallback glow */}
+              <div className="w-full aspect-video bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl" />
             </video>
-
-            {/* Aesthetic Glow Fallback/Underlay */}
+            {/* Ambient glow behind video */}
             <div className="absolute inset-0 flex items-center justify-center -z-10">
-              <div className="w-full aspect-video bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl opacity-30" />
+              <div className="w-full aspect-video bg-white/10 rounded-full blur-[100px] opacity-40" />
             </div>
           </motion.div>
         </div>
 
-        {/* Coming Soon Tagline - Delayed by 6 seconds */}
+        {/* Header Text */}
         <div className="absolute top-[12%] left-1/2 -translate-x-1/2 z-20 w-full pointer-events-none">
           <motion.div variants={comingSoonVariants} className="flex items-center justify-center gap-4 md:gap-8">
             <motion.div 
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ delay: 6.2, duration: 2, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: 2.2, duration: 2, ease: [0.16, 1, 0.3, 1] }}
               className="h-[1px] w-8 md:w-24 bg-white/40 origin-right" 
             />
             <h1 
               style={{
                 color: "#FFF",
                 textAlign: "center",
-                textShadow: "0 4px 4px rgba(0, 0, 0, 0.40)",
-                fontFamily: '"Blauer Nue", "Inter", system-ui, sans-serif',
+                textShadow: "0 4px 12px rgba(0, 0, 0, 0.6)",
+                fontFamily: '"Inter", system-ui, sans-serif',
                 fontSize: "clamp(32px, 8vw, 48px)",
                 fontStyle: "normal",
                 fontWeight: 500,
@@ -177,17 +175,17 @@ export default function App() {
             <motion.div 
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ delay: 6.2, duration: 2, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: 2.2, duration: 2, ease: [0.16, 1, 0.3, 1] }}
               className="h-[1px] w-8 md:w-24 bg-white/20 origin-left" 
             />
           </motion.div>
         </div>
 
-        {/* Lower Content - Wrapped in Glassmorphism Card */}
+        {/* Footer Content */}
         <div className="mt-auto pb-12 md:pb-16 flex flex-col items-center text-center w-full max-w-5xl z-30 px-4">
           <motion.div 
             variants={fadeInUpVariants}
-            className="w-full bg-white/[0.04] backdrop-blur-[40px] border border-white/20 rounded-[3rem] p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_0_0_1px_rgba(255,255,255,0.05)] flex flex-col items-center"
+            className="w-full bg-white/[0.04] backdrop-blur-[40px] border border-white/20 rounded-[3rem] p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col items-center"
           >
             <motion.p
               className="mb-8 px-4"
@@ -209,16 +207,26 @@ export default function App() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 style={{ backgroundColor: "#CE921B" }}
-                className="relative cursor-pointer outline-none border border-white/60 rounded-full px-10 py-2.5 transition-all duration-300"
+                className="relative cursor-pointer outline-none border border-white/60 rounded-full px-12 py-3 transition-all duration-300"
               >
-                <span className="relative z-10 flex items-center justify-center text-white font-semibold text-[12px] font-sans tracking-[0.2em] uppercase">
+                <span 
+                  className="relative z-10 flex items-center justify-center"
+                  style={{
+                    color: "#FFF",
+                    fontFamily: "Manrope, sans-serif",
+                    fontSize: "16px",
+                    fontStyle: "normal",
+                    fontWeight: 600,
+                    lineHeight: "20px"
+                  }}
+                >
                   Register Now
                 </span>
               </motion.button>
             </div>
 
-            {/* Timer Section */}
-            <div className="flex justify-center gap-6 md:gap-16 mb-10">
+            {/* Timer Grid */}
+            <div className="flex justify-center gap-2 md:gap-6 mb-10">
               <TimeUnit value={timeLeft.days} label="Days" progress={timeLeft.days / 365} />
               <TimeUnit value={timeLeft.hours} label="Hours" progress={timeLeft.hours / 24} />
               <TimeUnit value={timeLeft.minutes} label="Minutes" progress={timeLeft.minutes / 60} />
@@ -226,7 +234,7 @@ export default function App() {
             </div>
 
             <div className="flex items-center justify-center w-full opacity-40 hover:opacity-100 transition-opacity">
-              <p className="text-[10px] tracking-[0.4em] text-white font-sans font-medium ">
+              <p className="text-[10px] tracking-[0.4em] text-white font-sans font-medium uppercase">
                 An event by SSInnovations
               </p>
             </div>
@@ -244,17 +252,15 @@ interface TimeUnitProps {
 }
 
 function TimeUnit({ value, label, progress }: TimeUnitProps) {
-  const radius = 38; 
+  const radius = 44; 
   const circumference = 2 * Math.PI * radius;
-  
   const safeProgress = Math.min(Math.max(progress, 0), 1);
   const offset = circumference - (safeProgress * circumference);
 
   return (
     <motion.div className="flex flex-col items-center">
-      <div className="relative flex items-center justify-center w-20 h-20 md:w-28 md:h-28 mb-4">
-        {/* Progress Ring */}
-        <div className="absolute inset-0 flex items-center justify-center">
+      <div className="relative flex flex-col items-center justify-center w-24 h-24 md:w-36 md:h-36">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <svg className="w-full h-full -rotate-90 overflow-visible">
             <circle 
               cx="50%" 
@@ -283,37 +289,53 @@ function TimeUnit({ value, label, progress }: TimeUnitProps) {
           </svg>
         </div>
 
-        {/* Value with Transition */}
-        <div className="relative h-12 overflow-hidden flex items-center justify-center">
-          <AnimatePresence mode="popLayout">
-            <motion.span
-              key={value}
-              initial={{ y: 20, opacity: 0, filter: "blur(5px)" }}
-              animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-              exit={{ y: -20, opacity: 0, filter: "blur(5px)" }}
-              transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-              style={{
-                color: "#FFF",
-                textAlign: "center",
-                textShadow: "0 4px 4px rgba(0, 0, 0, 0.40)",
-                fontFamily: '"Blauer Nue", "Inter", system-ui, sans-serif',
-                fontSize: "32px",
-                fontStyle: "normal",
-                fontWeight: 500,
-                lineHeight: "150%",
-                letterSpacing: "-0.352px",
-                textTransform: "capitalize",
-              }}
-              className="tabular-nums"
-            >
-              {value.toString().padStart(2, '0')}
-            </motion.span>
-          </AnimatePresence>
+        <div className="relative flex flex-col items-center justify-center z-10">
+          <div className="relative h-8 md:h-10 overflow-hidden flex items-center justify-center">
+            <AnimatePresence mode="popLayout">
+              <motion.span
+                key={value}
+                initial={{ y: 15, opacity: 0, filter: "blur(4px)" }}
+                animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                exit={{ y: -15, opacity: 0, filter: "blur(4px)" }}
+                transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+                style={{
+                  color: "#FFF",
+                  textAlign: "center",
+                  textShadow: "0 4px 4px rgba(0, 0, 0, 0.40)",
+                  fontFamily: '"Inter", system-ui, sans-serif',
+                  fontSize: "clamp(24px, 4vw, 36px)",
+                  fontStyle: "normal",
+                  fontWeight: 500,
+                  lineHeight: "1",
+                  letterSpacing: "-0.352px",
+                  textTransform: "capitalize",
+                }}
+                className="tabular-nums block"
+              >
+                {value.toString().padStart(2, '0')}
+              </motion.span>
+            </AnimatePresence>
+          </div>
+          
+          <span 
+            className="mt-1"
+            style={{ 
+              color: "#FFF",
+              textAlign: "center",
+              textShadow: "0 4px 4px rgba(0, 0, 0, 0.40)",
+              fontFamily: "Manrope, sans-serif",
+              fontSize: "12px",
+              fontStyle: "normal",
+              fontWeight: 500,
+              lineHeight: "150%",
+              letterSpacing: "-0.132px",
+              textTransform: "capitalize",
+            }}
+          >
+            {label}
+          </span>
         </div>
       </div>
-      <span className="text-[10px] uppercase tracking-[0.4em] text-white/50 font-medium font-sans">
-        {label}
-      </span>
     </motion.div>
   );
 }
