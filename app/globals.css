@@ -1,0 +1,13 @@
+/* Replace the old @tailwind directives with this single line */
+@import "tailwindcss";
+
+:root {
+  --background: #02091A;
+  --foreground: #ffffff;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
