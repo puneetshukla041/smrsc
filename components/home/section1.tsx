@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useSpring, useMotionValue, Variants } from "framer-motion";
 
 /**
  * Section1: Professional Hero Component for SMRSC 2026.
  * Features a high-end cinematic reveal for the "Coming Soon" text after 6 seconds.
- * Updated: Timer number typography adjusted to exact user specifications.
+ * Updated: Video element restored and configured for reliable autoplay.
  */
 
 interface TimeLeft {
@@ -16,6 +16,7 @@ interface TimeLeft {
 
 export default function App() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const videoRef = useRef<HTMLVideoElement>(null);
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -50,6 +51,15 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Ensure video plays if browser blocks autoplay initially
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.log("Autoplay was prevented. User interaction might be required.", error);
+      });
+    }
+  }, []);
+
   const uiContainerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -78,13 +88,11 @@ export default function App() {
     hidden: { 
       opacity: 0, 
       y: 20, 
-      letterSpacing: "0.2em",
       filter: "blur(10px)" 
     },
     visible: {
       opacity: 1,
       y: 0,
-      letterSpacing: "-0.011em",
       filter: "blur(0px)",
       transition: {
         delay: 6,
@@ -111,19 +119,31 @@ export default function App() {
         variants={uiContainerVariants}
         className="relative z-10 w-full h-full flex flex-col items-center"
       >
-        {/* Center Video Reveal Placeholder */}
+        {/* Center Video Reveal */}
         <div className="absolute top-[32%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[850px] flex justify-center items-center z-10">
           <motion.div 
             variants={fadeInUpVariants}
             style={{ x: smoothX, y: smoothY }}
-            className="w-full flex justify-center"
+            className="w-full flex justify-center relative"
           >
-            <div className="relative w-full aspect-video flex items-center justify-center">
-              <div className="absolute w-full h-full bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl opacity-30" />
-              {/* Optional: Add video tag back when source is available */}
-              <div className="w-64 h-64 border border-white/5 rounded-full animate-pulse flex items-center justify-center">
-                 <div className="w-48 h-48 border border-white/10 rounded-full" />
-              </div>
+            {/* High-end Video Asset */}
+            <video
+              ref={videoRef}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-auto object-contain opacity-70 pointer-events-none mix-blend-screen z-10"
+              style={{ filter: "contrast(1.1) brightness(1.1)" }}
+            >
+              <source src="/videos/Color.mp4" type="video/mp4" />
+              {/* Fallback source if local path fails in preview */}
+              <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-flowing-gold-and-white-lines-34444-large.mp4" type="video/mp4" />
+            </video>
+
+            {/* Aesthetic Glow Fallback/Underlay */}
+            <div className="absolute inset-0 flex items-center justify-center -z-10">
+              <div className="w-full aspect-video bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl opacity-30" />
             </div>
           </motion.div>
         </div>
@@ -140,14 +160,17 @@ export default function App() {
             <h1 
               style={{
                 color: "#FFF",
-                textShadow: "0 0 30px rgba(255, 255, 255, 0.2)",
-                fontFamily: 'Inter, system-ui, sans-serif',
-                fontSize: "clamp(24px, 8vw, 48px)",
+                textAlign: "center",
+                textShadow: "0 4px 4px rgba(0, 0, 0, 0.40)",
+                fontFamily: '"Blauer Nue", "Inter", system-ui, sans-serif',
+                fontSize: "clamp(32px, 8vw, 48px)",
+                fontStyle: "normal",
                 fontWeight: 500,
                 lineHeight: "150%",
+                letterSpacing: "-0.528px",
                 textTransform: "uppercase",
               }}
-              className="whitespace-nowrap tracking-tight"
+              className="whitespace-nowrap"
             >
               Coming Soon!
             </h1>
@@ -277,7 +300,7 @@ function TimeUnit({ value, label, progress }: TimeUnitProps) {
                 fontSize: "32px",
                 fontStyle: "normal",
                 fontWeight: 500,
-                lineHeight: "150%", // 48px
+                lineHeight: "150%",
                 letterSpacing: "-0.352px",
                 textTransform: "capitalize",
               }}
