@@ -226,7 +226,7 @@ export default function App() {
             </div>
 
             <div className="flex items-center justify-center w-full opacity-40 hover:opacity-100 transition-opacity">
-              <p className="text-[10px] tracking-[0.4em] text-white font-sans font-medium uppercase">
+              <p className="text-[10px] tracking-[0.4em] text-white font-sans font-medium ">
                 An event by SSInnovations
               </p>
             </div>
