@@ -1,5 +1,11 @@
-/* Replace the old @tailwind directives with this single line */
+/* 1. Standard Google Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500&family=Inter:wght@400;500;600&display=swap');
+
+/* 2. The Tailwind v4 Virtual Import */
 @import "tailwindcss";
+
+/* 3. Link your JS config (Required for custom fonts in v4) */
+@config "../tailwind.config.js";
 
 :root {
   --background: #02091A;
@@ -9,5 +15,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  font-family: 'Manrope', sans-serif;
 }

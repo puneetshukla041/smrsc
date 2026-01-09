@@ -13,8 +13,7 @@ const navLinks = [
 
 /**
  * Professional Header Component
- * Fixed: TypeScript casting for onError handler to resolve build failure.
- * Updated: Transparent oval "Register Now" button with hover state.
+ * Updated: Specific typography for navigation links (Manrope, 14px, 32px leading).
  */
 export default function Header() {
   const [isVisible, setIsVisible] = useState(true);
@@ -44,7 +43,8 @@ export default function Header() {
     document.body.style.overflow = isMenuOpen ? "hidden" : "unset";
   }, [isMenuOpen]);
 
-  const navTextStyle = "text-[#E6E6E6] font-medium text-[13px] tracking-widest uppercase hover:text-white transition-colors cursor-pointer font-sans";
+  // Navigation style updated per requirements
+  const navTextStyle = "text-[#E6E6E6] font-medium text-[14px] leading-[32px] font-['Manrope',_sans-serif] hover:text-white transition-colors cursor-pointer";
 
   return (
     <>
@@ -71,7 +71,6 @@ export default function Header() {
                     alt="SMRSC Logo"
                     className="w-[110px] h-auto brightness-200"
                     onError={(e) => {
-                      // Fixed TypeScript error by casting target to HTMLImageElement
                       const target = e.target as HTMLImageElement;
                       target.src = "https://via.placeholder.com/110x30/02091A/FFFFFF?text=SMRSC+2026";
                     }}
@@ -94,7 +93,6 @@ export default function Header() {
                   <Search size={18} strokeWidth={2.5} />
                 </button>
 
-                {/* Professional Oval Button - Transparent default, Gold hover */}
                 <a
                   href="#register"
                   className="

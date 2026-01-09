@@ -3,9 +3,7 @@ import { motion, AnimatePresence, useSpring, useMotionValue, Variants } from "fr
 
 /**
  * Section1: Professional Hero Component for SMRSC 2026.
- * Features a high-end cinematic reveal for the "Coming Soon" text after a short delay.
- * Updated: Video configuration updated to match user snippet (opacity-70, mix-blend-screen, /videos/Color.mp4).
- * Maintained: Refined Register Button styling and enlarged timer circles.
+ * Adjusted: Drastically reduced container widths and added negative spacing to bring circles closer.
  */
 
 interface TimeLeft {
@@ -85,11 +83,7 @@ export default function App() {
   };
 
   const comingSoonVariants: Variants = {
-    hidden: { 
-      opacity: 0, 
-      y: 20, 
-      filter: "blur(10px)" 
-    },
+    hidden: { opacity: 0, y: 20, filter: "blur(10px)" },
     visible: {
       opacity: 1,
       y: 0,
@@ -119,7 +113,7 @@ export default function App() {
         variants={uiContainerVariants}
         className="relative z-10 w-full h-full flex flex-col items-center"
       >
-        {/* Video Hero Area - Updated to match snippet behavior */}
+        {/* Video Hero Area */}
         <div className="absolute top-[35%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[850px] flex justify-center items-center z-10">
           <motion.div 
             variants={fadeInUpVariants}
@@ -136,13 +130,8 @@ export default function App() {
               style={{ filter: "contrast(1.2) brightness(1.2)" }}
             >
               <source src="/videos/Color.mp4" type="video/mp4" />
-              {/* Fallback glow */}
               <div className="w-full aspect-video bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl" />
             </video>
-            {/* Ambient glow behind video */}
-            <div className="absolute inset-0 flex items-center justify-center -z-10">
-              <div className="w-full aspect-video bg-white/10 rounded-full blur-[100px] opacity-40" />
-            </div>
           </motion.div>
         </div>
 
@@ -162,11 +151,9 @@ export default function App() {
                 textShadow: "0 4px 12px rgba(0, 0, 0, 0.6)",
                 fontFamily: '"Inter", system-ui, sans-serif',
                 fontSize: "clamp(32px, 8vw, 48px)",
-                fontStyle: "normal",
                 fontWeight: 500,
-                lineHeight: "150%",
-                letterSpacing: "-0.528px",
                 textTransform: "uppercase",
+                letterSpacing: "-0.528px",
               }}
               className="whitespace-nowrap"
             >
@@ -188,45 +175,24 @@ export default function App() {
             className="w-full bg-white/[0.04] backdrop-blur-[40px] border border-white/20 rounded-[3rem] p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col items-center"
           >
             <motion.p
-              className="mb-8 px-4"
+              className="mb-6 px-4"
               style={{
-                color: "#E5E5E5",
-                textShadow: "0 2px 4px rgba(0, 0, 0, 0.40)",
-                fontFamily: "Manrope, sans-serif",
-                fontSize: "14px",
-                fontWeight: 400,
-                lineHeight: "160%",
-                letterSpacing: "0.1em",
+                color: "#FFF",
+                textShadow: "0 4px 4px rgba(0, 0, 0, 0.40)",
+                fontFamily: "Manrope",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: 500,
+                lineHeight: "150%",
+                letterSpacing: "-0.176px",
+                textTransform: "capitalize",
               }}
             >
               Third global SS Innovations multi specialty robotic surgery conference
             </motion.p>
 
-            <div className="mb-10">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                style={{ backgroundColor: "#CE921B" }}
-                className="relative cursor-pointer outline-none border border-white/60 rounded-full px-12 py-3 transition-all duration-300"
-              >
-                <span 
-                  className="relative z-10 flex items-center justify-center"
-                  style={{
-                    color: "#FFF",
-                    fontFamily: "Manrope, sans-serif",
-                    fontSize: "16px",
-                    fontStyle: "normal",
-                    fontWeight: 600,
-                    lineHeight: "20px"
-                  }}
-                >
-                  Register Now
-                </span>
-              </motion.button>
-            </div>
-
-            {/* Timer Grid */}
-            <div className="flex justify-center gap-2 md:gap-6 mb-10">
+            {/* Timer Grid - Reduced gap and added negative spacing */}
+            <div className="flex justify-center -space-x-1 md:-space-x-4 mb-10">
               <TimeUnit value={timeLeft.days} label="Days" progress={timeLeft.days / 365} />
               <TimeUnit value={timeLeft.hours} label="Hours" progress={timeLeft.hours / 24} />
               <TimeUnit value={timeLeft.minutes} label="Minutes" progress={timeLeft.minutes / 60} />
@@ -234,7 +200,7 @@ export default function App() {
             </div>
 
             <div className="flex items-center justify-center w-full opacity-40 hover:opacity-100 transition-opacity">
-              <p className="text-[10px] tracking-[0.4em] text-white font-sans font-medium uppercase">
+              <p className="text-[10px] tracking-[0.4em] text-white font-sans font-medium ">
                 An event by SSInnovations
               </p>
             </div>
@@ -252,14 +218,17 @@ interface TimeUnitProps {
 }
 
 function TimeUnit({ value, label, progress }: TimeUnitProps) {
-  const radius = 44; 
+  const radius = 42; // Slightly smaller radius to prevent clipping
   const circumference = 2 * Math.PI * radius;
   const safeProgress = Math.min(Math.max(progress, 0), 1);
   const offset = circumference - (safeProgress * circumference);
 
   return (
     <motion.div className="flex flex-col items-center">
-      <div className="relative flex flex-col items-center justify-center w-24 h-24 md:w-36 md:h-36">
+      {/* Reduced width from w-24 to w-20 on mobile 
+          Reduced width from w-36 to w-28 on desktop 
+      */}
+      <div className="relative flex flex-col items-center justify-center w-20 h-24 md:w-28 md:h-36">
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <svg className="w-full h-full -rotate-90 overflow-visible">
             <circle 
@@ -281,10 +250,7 @@ function TimeUnit({ value, label, progress }: TimeUnitProps) {
               animate={{ 
                 strokeDashoffset: isNaN(offset) ? circumference : offset,
               }}
-              transition={{ 
-                duration: 1, 
-                ease: "linear", 
-              }}
+              transition={{ duration: 1, ease: "linear" }}
             />
           </svg>
         </div>
@@ -300,15 +266,10 @@ function TimeUnit({ value, label, progress }: TimeUnitProps) {
                 transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
                 style={{
                   color: "#FFF",
-                  textAlign: "center",
-                  textShadow: "0 4px 4px rgba(0, 0, 0, 0.40)",
                   fontFamily: '"Inter", system-ui, sans-serif',
-                  fontSize: "clamp(24px, 4vw, 36px)",
-                  fontStyle: "normal",
+                  fontSize: "clamp(20px, 4vw, 32px)", // Slightly smaller text for tighter fit
                   fontWeight: 500,
                   lineHeight: "1",
-                  letterSpacing: "-0.352px",
-                  textTransform: "capitalize",
                 }}
                 className="tabular-nums block"
               >
@@ -321,15 +282,11 @@ function TimeUnit({ value, label, progress }: TimeUnitProps) {
             className="mt-1"
             style={{ 
               color: "#FFF",
-              textAlign: "center",
-              textShadow: "0 4px 4px rgba(0, 0, 0, 0.40)",
+              opacity: 0.7,
               fontFamily: "Manrope, sans-serif",
-              fontSize: "12px",
-              fontStyle: "normal",
-              fontWeight: 500,
-              lineHeight: "150%",
-              letterSpacing: "-0.132px",
-              textTransform: "capitalize",
+              fontSize: "10px", // Slightly smaller label
+              textTransform: "uppercase",
+              letterSpacing: "0.05em"
             }}
           >
             {label}
